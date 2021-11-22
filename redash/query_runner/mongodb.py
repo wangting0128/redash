@@ -83,6 +83,18 @@ def _get_column_by_name(columns, column_name):
     return None
 
 
+def _get_raw_vale(raw_name, values):
+    if not isinstance(raw_name, str) or not isinstance(values, list):
+        logger.error("[_get_raw_vale] Cannot assign value to row ")
+        return False
+
+    result = []
+    for value in values:
+        result.append({raw_name: value})
+
+    return result
+
+
 def parse_dict(dic):
     res = dict()
     for key, value in dic.items():
@@ -342,7 +354,7 @@ class MongoDB(BaseQueryRunner):
 
             if "distinct" in query_data:
                 distinct_data = cursor.distinct(query_data["distinct"])
-                cursor = [{query_data["distinct"]: distinct_data}]
+                cursor = _get_raw_vale(query_data["distinct"], distinct_data)
 
         elif aggregate:
             allow_disk_use = query_data.get("allowDiskUse", False)
