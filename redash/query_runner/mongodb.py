@@ -343,7 +343,7 @@ class MongoDB(BaseQueryRunner):
             if "distinct" in query_data:
                 logger.error("%s type of cursor %s" % ('-' * 50, str(type(cursor))))
                 distinct_data = cursor.distinct(query_data["distinct"])
-                cursor = []
+                cursor = {}
                 cursor[query_data["distinct"]] = distinct_data
                 logger.error("%s type of cursor %s" % ('-' * 50, str(type(cursor))))
                 logger.error(cursor)
@@ -369,6 +369,8 @@ class MongoDB(BaseQueryRunner):
 
             rows.append({"count": cursor})
         else:
+            logger.error("%s type of cursor %s" % ('-' * 50, str(type(cursor))))
+            logger.error(cursor)
             rows, columns = parse_results(cursor)
 
         if f:
