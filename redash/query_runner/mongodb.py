@@ -340,6 +340,9 @@ class MongoDB(BaseQueryRunner):
             if "count" in query_data:
                 cursor = cursor.count()
 
+            if "distinct" in query_data:
+                cursor = cursor.distinct(query_data["distinct"])
+
         elif aggregate:
             allow_disk_use = query_data.get("allowDiskUse", False)
             r = db[collection].aggregate(aggregate, allowDiskUse=allow_disk_use)
